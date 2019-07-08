@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">BMI</string>
+    <string name="height">身高</string>
+    <string name="weight">體重</string>
+    <string name="bmi">BMI結果</string>
+    <string name="bmiCount">計算</string>
+    <string name="underweight">體重過輕</string>
+    <string name="overweight">體重過重</string>
+    <string name="moderateweight">體重適中</string>
+</resources>
