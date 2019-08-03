@@ -6,3 +6,17 @@ https://www.cnblogs.com/mercuryli/p/4868380.html
 https://blog.csdn.net/a591243801/article/details/67640114
 https://blog.csdn.net/huangxiaohu_coder/article/details/8497286
 https://developer.android.com/reference/android/view/ViewGroup.LayoutParams
+
+製作過程:
+網站上的程式碼由於Android版本不同
+"所以照抄是無法運作的"
+
+主要的原因在於OnSizeChanged在開發時已經無法在自訂義View時載入方法
+與之相關同時在載入時要使用的GameStart方法也需要更著改變
+以上是這個程式開發時的主要問題
+還有一些小問題會在我的開發流程中敘述
+
+一開始在開發時我的卡片類不知為何無法成功addView,畫面出不來
+所以更改教學上的步驟
+先成功實現addCard,讓TextView成功顯示
+再設定Card方法改變TextView的屬性
