@@ -222,6 +222,7 @@ public class gameView extends GridLayout {
                     startGame();
                 }
             }).show();
+            MainActivity.getMainActivity().clearScore();
         }
     }
 
