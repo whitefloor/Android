@@ -7,18 +7,20 @@ https://blog.csdn.net/a591243801/article/details/67640114
 https://blog.csdn.net/huangxiaohu_coder/article/details/8497286
 https://developer.android.com/reference/android/view/ViewGroup.LayoutParams
 
+實機機種:OPPO A7Xpro
+
 製作過程:
 網站上的程式碼由於Android版本不同
 "所以照抄是無法運作的"
 
 主要的原因在於OnSizeChanged在開發時已經無法在自訂義View時載入方法
 與之相關同時在載入時要使用的startGame方法也需要更著改變
-以上是這個程式開發時的主要問題
-還有一些小問題會在我的開發流程中敘述
+我只會列出這個程式開發時的主要問題,其他小功能沒有更動的部分在原著中都有詳細的解說
+還有一些小問題會在我的流程中敘述
 
 一.Card方法製作過程
 二.遊戲主程式:判斷上下左右、移動數字、合併數字
-三.添加隨機數、結束遊戲判斷
+三.添加隨機數
 
 ===================================================================================================================================
 一.
@@ -29,13 +31,18 @@ https://developer.android.com/reference/android/view/ViewGroup.LayoutParams
 再設定Card方法改變TextView的屬性
 最後在完成setNum、getNum、aequals方法
 
-這部分有兩個重點
+這部分有幾個重點
 可以參考這部分解釋https://blog.csdn.net/huangxiaohu_coder/article/details/8497286
 錯誤的訊息為“Binary XML file line # : Error inflating class”
 1.引用類別路徑的問題:我將gameView的路徑直接取代GridLayout的名稱進行UI控制,複製錯誤或是沒有完整的路徑名稱
 2.在自訂義View時,三種Context載入方法都必須實現
+3.修改了原有因版本差異導致在新版Android Studio在建構中無法獲取到的的OnSizeChanged方法,改為getCardWidth方法,這樣便可以在建構時獲取到螢幕的寬高
+4.由於原著將startGame方法包含在OnSizeChanged裡,而OnSizeChanged進行了更改,所以startGame方法需要更改建構順序
+我的想法是在initGame裡所有建構完字卡片等等的方法完畢後,再重新清空掉一次卡片的數據,重新添加我們需要的隨機數
+所以再三種載入的Context方法裡除了initGame又增加了startGame方法
 
 ===================================================================================================================================
+
 二.
 
 接著設計主程式需要判斷上、下、左、右滑動合併卡片的部分
@@ -43,7 +50,7 @@ https://developer.android.com/reference/android/view/ViewGroup.LayoutParams
 所以使用了switch case在手指按下及放開時進行判斷
 
 這部分需要注意
-3.當我實現完成了四種滑動方向的判斷
+5.當我實現完成了四種滑動方向的判斷
 我使用Toast顯示出我滑動的結果
 例如swipeLeft(),判斷往左滑後,Toast將會顯示Left
 來判斷我的四個方法是否成功實現
@@ -68,6 +75,19 @@ if(judge){
 滑動手指>判斷方向>迴圈合併or移動數字>添加隨機數>檢查遊戲是否結束
 以保證遊戲能夠在最後一次確定會結束
 
-4.這是我在開發過程中打錯的地方,也是個陷阱
+6.這是我在開發過程中打錯的地方,也是個陷阱
 如果你寫成if(judge=true)
 這個判斷式會恆真
+
+===================================================================================================================================
+
+三.添加隨機數
+這個部分碰巧發現的
+因為我不小心將滑動或是合併就增加隨機數的if判斷式設定成always true
+造成會永遠進入到發現了我在addRandomNum裡的錯誤
+錯誤情況為,我所有的卡片都有了數字後,在滑動一次就會崩潰
+而OPPO的手機似乎對底層的設定有進行更改
+所以我怎麼看都看不到我的錯誤訊息
+經過了高人指點以及自己用try catch抓錯誤
+發現了如果全部格子都有值,代表addRandomNum()裡的emptyPoint在for迴圈後還會是空的
+emptyPoint.remove(int)就丟出了IndexOutOfBoundException index:0 Size:0的錯誤
