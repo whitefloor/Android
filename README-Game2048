@@ -106,7 +106,8 @@ https://www.bilibili.com/video/av19689831/?p=11
 他的意思是說因為主要的Activity是gameView而不是MainActivity
 所以在MainActivity裡的TextView都還沒建構好
 
-最後想到了將clearScore()方法改到了這裡解決這個問題
+最後想到了將clearScore()方法改到了checkOverGame()
+當遊戲結束時清空積分,解決這個問題
 
 ===================================================================================================================================
 
